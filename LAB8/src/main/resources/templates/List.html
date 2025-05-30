@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Blog - Lista de Entradas</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    </head>
+    <body class="container mt-4">
+        <h1>Entradas del Blog</h1>
+        <a class="btn btn-primary mb-3" th:href="@{/posts/nuevo}">Crear Nueva Entrada</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Fecha de Publicación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="post : ${posts}">
+                    <td th:text="${post.titulo}"></td>
+                    <td th:text="${post.autor}"></td>
+                    <td th:text="${#temporals.format(post.fechaPublicacion, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td>
+                        <a th:href="@{'/posts/' + ${post.id}}" class="btn btn-sm btn-info">Ver</a>
+                        <a th:href="@{'/posts/editar/' + ${post.id}}" class="btn btn-sm btn-warning">Editar</a>
+                        <form th:action="@{'/posts/eliminar/' + ${post.id}}" method="post" style="display:inline;">
+                            <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('¿Eliminar esta entrada?')">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
