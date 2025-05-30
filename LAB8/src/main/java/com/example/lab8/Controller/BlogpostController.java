@@ -19,46 +19,46 @@ public class BlogpostController {
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("posts", repo.findAll());
-        return "listar";
+        return "/List";
     }
 
     @GetMapping("/nuevo")
     public String nuevoForm(Model model) {
         model.addAttribute("post", new Blogpost());
-        return "formulario";
+        return "/Form";
     }
 
     @PostMapping
     public String guardar(@Valid @ModelAttribute Blogpost post, BindingResult result) {
-        if (result.hasErrors()) return "formulario";
+        if (result.hasErrors()) return "/Form";
         repo.save(post);
-        return "redirect:/posts";
+        return "redirect:/List";
     }
 
     @GetMapping("/{id}")
     public String ver(@PathVariable Long id, Model model) {
         model.addAttribute("post", repo.findById(id).orElseThrow());
-        return "ver";
+        return "/Ver";
     }
 
     @GetMapping("/editar/{id}")
     public String editarForm(@PathVariable Long id, Model model) {
         model.addAttribute("post", repo.findById(id).orElseThrow());
-        return "formulario";
+        return "/Form";
     }
 
     @PostMapping("/editar/{id}")
     public String actualizar(@PathVariable Long id, @Valid @ModelAttribute Blogpost post, BindingResult result) {
-        if (result.hasErrors()) return "formulario";
+        if (result.hasErrors()) return "/Form";
         post.setId(id);
         repo.save(post);
-        return "redirect:/posts";
+        return "redirect:/List";
     }
 
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
         repo.deleteById(id);
-        return "redirect:/posts";
+        return "redirect:/List";
     }
 }
 
